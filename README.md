@@ -5,8 +5,9 @@ Cd to your project the right way!
 
 Prj chooses a project directory based on fuzzy matching
 
-Usage:
-------
+
+Installation:
+-------------
 
 Put this into your .zshrc (.bashrc)
 
@@ -24,3 +25,10 @@ Put a project root directory into ~/.prj, i.e:
 
 and run ```p letters_from_your_project_folder_name```
 
+
+Usage:
+------
+
+```
+cd some_project
+```
