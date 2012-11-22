@@ -1,0 +1,99 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'find'
+
+def filter(directories, letters)
+  directories.select do |dir|
+    filter_dir(dir, letters)
+  end.sort do |d1, d2|
+    disp1 = dispersion(d1, letters)
+    disp2 = dispersion(d2, letters)
+    if disp1 < disp2
+      -1
+    elsif disp1 > disp2
+      1
+    else
+      if d1.length < d2.length
+        -1
+      elsif d1.length > d2.length
+        1
+      else
+        0
+      end
+    end
+  end
+end
+
+def filter_dir(dir, letters)
+  if letters.empty?
+    true
+  else
+    letter = letters.first
+    i = dir.index(letter)
+    i && filter_dir(dir[(i + 1)..-1], letters[1..-1])
+  end
+end
+
+def dispersion(dir, letters)
+  return 0 if dir.empty? || letters.empty?
+  indices = []
+  d = dir.dup
+  letters.each do |letter|
+    idx = d.index(letter)
+    indices << idx
+    d = d[(idx + 1)..-1]
+  end
+  indices.inject(0, &:+) - indices.first
+end
+
+if $0 == __FILE__
+  PROJECTS_ROOT = File.expand_path("~/Projects")
+
+  letters = ARGV.fetch(0) do
+    puts PROJECTS_ROOT
+    exit 0
+  end
+
+  subdirectories = []
+  Find.find(PROJECTS_ROOT) { |d| subdirectories << d && Find.prune if FileTest.exists?(File.join(d, ".git/")) }
+
+  chars = letters.each_char.to_a
+  dirs_to_match = subdirectories.map { |r| r.gsub(PROJECTS_ROOT, "") }
+
+  filtered = filter(dirs_to_match, chars)
+  dir = File.join(PROJECTS_ROOT, filtered.first.to_s)
+  puts dir
+  exit 0
+else
+  require 'rubygems'
+  require 'rspec'
+
+  describe "#dispersion" do
+    dispersion("foo bar", %w(f o)).should == 0
+    dispersion("foo bar", %w(f b)).should == 3
+  end
+
+  describe "#filter" do
+    it "filters based on ordered occurrences" do
+      dirs = ["foos", "bars", "quxs"]
+      filter(dirs, %w(f o)).should == ["foos"]
+    end
+
+    it "counts same chars correctly" do
+      dirs = ["solar studio", "mars maraphone", "way too complex", "totla madness"]
+      filter(dirs, %w(s s)).should =~ ["solar studio", "totla madness"]
+      filter(dirs, %w(o o)).should =~ ["solar studio", "way too complex"]
+      filter(dirs, %w(a a)).should =~ ["mars maraphone", "totla madness"]
+      filter(dirs, %w(r o)).should =~ ["solar studio", "mars maraphone"]
+      filter(dirs, %w(x x)).should == []
+      filter(dirs, %w(m a d n e)).should =~ ["totla madness"]
+    end
+
+    it "sorts by dispersion and length" do
+      dirs = ["/Eclipse Workspace/", "/koans/", "/omniauth/", "/ruby-download/"]
+      filter(dirs, %w(o a)).should == ["/koans/", "/omniauth/", "/ruby-download/", "/Eclipse Workspace/"]
+    end
+  end
+end
