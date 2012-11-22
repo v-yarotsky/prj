@@ -22,4 +22,5 @@ RSpec::Core::RakeTask.new(:acceptance_spec) do |t|
 end
 
 task :default => [:spec]
+task :all_specs => [:spec, :acceptance_spec]
 
