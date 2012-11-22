@@ -17,9 +17,8 @@ RSpec::Core::RakeTask.new do |t|
   t.pattern = 'spec/lib/**/*_spec.rb'
 end
 
-RSpec::Core::RakeTask.new do |t|
+RSpec::Core::RakeTask.new(:acceptance_spec) do |t|
   t.pattern = 'spec/acceptance/**/*_spec.rb'
-  t.name = :acceptance_spec
 end
 
 task :default => [:spec]
