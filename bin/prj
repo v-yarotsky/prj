@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'rubygems'
+require 'prj'
+require 'prj/app'
+
+include Prj
+
+Signal.trap("SIGINT") do
+  puts "Terminating"
+  exit 1
+end
+
+exit App.new(STDOUT, ARGV).run
+
