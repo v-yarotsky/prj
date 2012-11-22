@@ -2,7 +2,7 @@
 
 $:.unshift File.expand_path('../lib/', __FILE__)
 
-require 'pjr'
+require 'prj'
 require 'date'
 
 Gem::Specification.new do |s|

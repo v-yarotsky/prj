@@ -8,11 +8,19 @@ Prj chooses a project directory based on fuzzy matching
 Usage:
 ------
 
+Put this into your .zshrc (.bashrc)
+
+```
+function p() {
+  builtin cd "$(prj $1)"
+}
+```
+
 Put a project root directory into ~/.prj, i.e:
 
 ```
 ~/Projects
 ```
 
-and run ```prj letters_from_your_project_folder_name```
+and run ```p letters_from_your_project_folder_name```
 
