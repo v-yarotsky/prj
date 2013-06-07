@@ -21,6 +21,6 @@ RSpec::Core::RakeTask.new(:acceptance_spec) do |t|
   t.pattern = 'spec/acceptance/**/*_spec.rb'
 end
 
-task :default => [:spec]
 task :all_specs => [:spec, :acceptance_spec]
+task :default => [:all_specs]
 

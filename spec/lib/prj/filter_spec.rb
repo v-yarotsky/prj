@@ -6,10 +6,10 @@ describe "Prj::Filter" do
     Prj::Filter.new(letters)
   end
 
-  describe "#dispersion" do
-    it "should calculate dispersion as difference between character positions except first character position" do
-      filter(%w(f o)).dispersion("foo bar").should == 0
-      filter(%w(f b)).dispersion("foo bar").should == 3
+  describe "#distance" do
+    it "should calculate distance as difference between character positions except first character position" do
+      filter(%w(f o)).distance("foo bar").should == 0
+      filter(%w(f b)).distance("foo bar").should == 3
     end
   end
 
@@ -29,12 +29,12 @@ describe "Prj::Filter" do
       filter(%w(m a d n e)).filter(dirs).should =~ ["totla madness"]
     end
 
-    it "sorts by dispersion" do
+    it "sorts by distance" do
       dirs = ["/koans/", "/omniauth/", "/ruby-download/"]
       filter(%w(o a)).filter(dirs).should == ["/koans/", "/omniauth/", "/ruby-download/"]
     end
 
-    it "sorts by length for lines when dispersion is same" do
+    it "sorts by length for lines when distance is same" do
       dirs = ["/franchise/", "/granny/"]
       filter(%w(a n)).filter(dirs).should == ["/granny/", "/franchise/"]
 

@@ -1,14 +1,17 @@
+require 'prj/dir_with_score'
+
 module Prj
+
   class Filter
     def initialize(letters)
       @letters = letters.to_a
     end
 
     def filter(directories)
-      sort(directories.select { |d| filter_dir(d, @letters) })
+      directories.select { |d| filter_dir(d, @letters) }.map { |d| DirWithScore.new(d, distance(d)) }.sort.map(&:to_s)
     end
 
-    def dispersion(dir)
+    def distance(dir)
       return 0 if dir.empty? || @letters.empty?
       indices = []
       d = dir.dup
@@ -22,6 +25,9 @@ module Prj
 
     private
 
+    #
+    # Returns true if directory path contains all letters (ordered)
+    #
     def filter_dir(dir, letters)
       if letters.empty?
         true
@@ -31,26 +37,7 @@ module Prj
         i && filter_dir(dir[(i + 1)..-1], letters[1..-1])
       end
     end
-
-    def sort(directories)
-      directories.sort do |d1, d2|
-        disp1 = dispersion(d1)
-        disp2 = dispersion(d2)
-        if disp1 < disp2
-          -1
-        elsif disp1 > disp2
-          1
-        else
-          if d1.length < d2.length
-            -1
-          elsif d1.length > d2.length
-            1
-          else
-            0
-          end
-        end
-      end
-    end
   end
+
 end
 

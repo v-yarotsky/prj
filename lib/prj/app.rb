@@ -1,48 +1,48 @@
-require 'prj/finder'
-require 'prj/filter'
+require 'yaml'
 
 module Prj
+
   class App
     class << self
-      attr_accessor :default_projects_root, :ignore_config
+      attr_accessor :config_path
     end
-    @default_projects_root = "~/Projects".freeze
-    @ignore_config = false
+    @config_path = File.expand_path("~/.prj.yml").freeze
 
-    def initialize(sink, args = [])
+    def initialize(output, args = [])
       @letters = String(args.first).each_char.to_a
-      @sink = sink
+      @output = output
     end
 
     def run
       if @letters.empty?
-        @sink.puts projects_root
-      else
-        finder = Finder.new(projects_root)
-        filter = Filter.new(@letters)
-
-        directories = finder.find_project_directories
-        filtered_directories = filter.filter(directories)
-
-        target_directory = File.join(projects_root, filtered_directories.first.to_s)
-
-        @sink.puts target_directory
+        @output.puts config.fetch("projects_root")
+        return 0
       end
-
-      return 0
+      finder = Finder.new(config.fetch("projects_root"), config.fetch("vcs_directories"))
+      filter = Filter.new(@letters)
+      directories = finder.find_project_directories
+      filtered_directories = filter.filter(directories)
+      target_directory = File.join(config.fetch("projects_root"), filtered_directories.first.to_s)
+      @output.puts target_directory
+      0
     end
 
-    def projects_root
-      @projects_root ||= begin
-        path = begin
-          raise "default config" if self.class.ignore_config
-          File.read(File.expand_path("~/.prj")).chomp
-        rescue
-          self.class.default_projects_root
-        end
-        File.expand_path(path).freeze
+    def config
+      @config ||= begin
+        config = File.exists?(self.class.config_path) ? YAML.load(File.read(self.class.config_path)) : {}
+        default_config.merge(config)
       end
+    end
+
+    private
+
+    def default_config
+      default_config = {
+        "projects_root" => File.expand_path("~/Projects"),
+        "vcs_directories" => [".git"]
+      }
     end
   end
+
 end
 
