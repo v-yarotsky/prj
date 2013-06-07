@@ -1,7 +1,7 @@
 Prj
 ==========
 
-[![Build Status](https://secure.travis-ci.org/v-yarotsky/prj.png)](http://travis-ci.org/v-yarotsky/prj)
+[![Build Status](https://travis-ci.org/v-yarotsky/prj.png?branch=master)](https://travis-ci.org/v-yarotsky/prj)
 [![Code Climate](https://codeclimate.com/github/v-yarotsky/prj.png)](https://codeclimate.com/github/v-yarotsky/prj)
 [![Gem Version](https://badge.fury.io/rb/prj.png)](http://badge.fury.io/rb/prj)
 
