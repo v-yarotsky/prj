@@ -19,6 +19,11 @@ describe "Prj::Filter" do
       filter(%w(f o)).filter(dirs).should == ["foos"]
     end
 
+    it "filters out non-satisfying entries" do
+      dirs = ["foos", "bars", "quxs"]
+      filter(%w(f o o q x b d u)).filter(dirs).should == []
+    end
+
     it "counts same chars correctly" do
       dirs = ["solar studio", "mars maraphone", "way too complex", "totla madness"]
       filter(%w(s s)).filter(dirs).should =~ ["solar studio", "totla madness"]
