@@ -2,10 +2,6 @@ require 'spec_helper'
 require 'prj/filter'
 
 describe "Prj::Filter" do
-  def filter(letters)
-    Prj::Filter.new(letters)
-  end
-
   describe "#distance" do
     it "should calculate distance as difference between character positions except first character position" do
       filter(%w(f o)).distance("foo bar").should == 0
@@ -46,7 +42,15 @@ describe "Prj::Filter" do
       dirs = ["/granny/", "/franchise/"]
       filter(%w(a n)).filter(dirs).should == ["/granny/", "/franchise/"]
     end
+
+    it "supports case-insensitive mode" do
+      dirs = ["/Hello/", "/hello-world/", "/hi-fella/"]
+      filter(%w(h e l l o), false).filter(dirs).should == ["/Hello/", "/hello-world/"]
+    end
   end
 
+  def filter(letters, options = {})
+    Prj::Filter.new(letters, options)
+  end
 end
 

@@ -4,8 +4,9 @@ require 'strscan'
 module Prj
 
   class Filter
-    def initialize(letters)
+    def initialize(letters, case_sensitive = true)
       @letters = letters.to_a
+      @case_sensitive = case_sensitive
     end
 
     def filter(directories)
@@ -15,7 +16,8 @@ module Prj
     def distance(dir)
       scanner = StringScanner.new(dir)
       @letters.each do |letter|
-        scanner.scan(/.*?[#{letter}]/) or return :no_score
+        regexp = Regexp.new(".*?[#{letter}]", !@case_sensitive)
+        scanner.scan(regexp) or return :no_score
       end
       scanner.pos - @letters.length
     end

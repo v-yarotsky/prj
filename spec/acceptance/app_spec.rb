@@ -25,7 +25,7 @@ describe "Prj::App" do
     subdirectories.each { |d| FileUtils.mkdir_p(d) }
   end
 
-  context "with default projcts root" do
+  context "within projcts root" do
     it "prints matching directory and returns 0" do
       with_config("projects_root" => root) do
         Prj::App.new(output, ["ap"]).run.should == 0
@@ -37,6 +37,13 @@ describe "Prj::App" do
       with_config("projects_root" => root) do
         Prj::App.new(output, ["nothingtofind"]).run.should == 0
         output.string.chomp.should == root + "/"
+      end
+    end
+
+    it "allows case-insensitive search if option specified in config" do
+      with_config("projects_root" => root, "case_sensitive" => false) do
+        Prj::App.new(output, ["Fo"]).run.should == 0
+        output.string.chomp.should == File.join(root, "foo")
       end
     end
   end
