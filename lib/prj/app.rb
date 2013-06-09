@@ -19,7 +19,7 @@ module Prj
         return 0
       end
       finder = Finder.new(config.fetch("projects_root"), config.fetch("vcs_directories"))
-      filter = Filter.new(@letters, config.fetch("case_sensitive") { true })
+      filter = Filter.new(@letters, config.fetch("case_sensitive"))
       directories = finder.find_project_directories
       filtered_directories = filter.filter(directories)
       target_directory = File.join(config.fetch("projects_root"), filtered_directories.first.to_s)
@@ -38,8 +38,9 @@ module Prj
 
     def default_config
       default_config = {
-        "projects_root" => File.expand_path("~/Projects"),
-        "vcs_directories" => [".git"]
+        "projects_root"   => File.expand_path("~/Projects"),
+        "vcs_directories" => [".git"],
+        "case_sensitive"  => true
       }
     end
   end
