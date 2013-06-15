@@ -7,3 +7,5 @@ rvm:
 branches:
   only:
     - master
+before_script:
+  - rake compile
