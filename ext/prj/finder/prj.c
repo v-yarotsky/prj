@@ -53,7 +53,7 @@ VALUE traverse_projects_root(VALUE self, char *projectsRoot, VALUE (*callback)(V
   FTSENT *child  = NULL;
   FTSENT *parent = NULL;
 
-  char *paths[] = { projectsRoot };
+  char *paths[] = { projectsRoot, NULL };
   fs = fts_open(paths, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOSTAT | FTS_SEEDOT, NULL);
 
   if (fs != NULL) {
