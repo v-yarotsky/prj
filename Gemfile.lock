@@ -11,6 +11,8 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.3.1)
     rake (0.9.5)
+    rake-compiler (0.8.3)
+      rake
     rspec (2.12.0)
       rspec-core (~> 2.12.0)
       rspec-expectations (~> 2.12.0)
@@ -32,5 +34,6 @@ DEPENDENCIES
   fakefs (~> 0.4)
   pry
   rake (~> 0.9)
+  rake-compiler
   rspec (~> 2.11)
   simplecov (~> 0.6)

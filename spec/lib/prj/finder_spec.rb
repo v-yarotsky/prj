@@ -1,12 +1,15 @@
 require 'spec_helper'
-require 'fakefs/spec_helpers'
+require 'tmpdir'
 require 'fileutils'
 require 'prj/finder'
 
 describe "Prj::Finder" do
-  include FakeFS::SpecHelpers
-
-  let(:root) { "~/projects" }
+  around(:each) do |example|
+    Dir.mktmpdir("projects") do |root|
+      @root = root
+      example.run
+    end
+  end
 
   it "finds directories containing .git/ scoped to given root and returns their relative paths" do
     make_directories(root, "/foo/.git", "/bar/qux", "/baz/.git")
@@ -29,6 +32,10 @@ describe "Prj::Finder" do
 
   def finder(*vcs_directories)
     Prj::Finder.new(root, vcs_directories)
+  end
+
+  def root
+    @root
   end
 end
 

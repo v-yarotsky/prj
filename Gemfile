@@ -6,6 +6,7 @@ group :development do
   gem 'simplecov', "~> 0.6", :require => false
   gem "fakefs", "~> 0.4", :require => "fakefs/safe"
   gem 'pry'
+  gem "rake-compiler"
 end
 
 

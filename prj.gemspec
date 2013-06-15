@@ -23,8 +23,9 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.specification_version = 3
 
+  s.extensions = Dir.glob("ext/**/extconf.rb")
   s.executables = ["prj"]
-  s.files = Dir.glob("{bin,lib,spec}/**/*") + %w[Gemfile Gemfile.lock Rakefile LICENSE.txt README.md VERSION]
+  s.files = Dir.glob("{bin,lib,ext,spec}/**/*") + %w[Gemfile Gemfile.lock Rakefile LICENSE.txt README.md VERSION]
   s.require_paths = ["lib"]
 
   s.add_development_dependency("rspec", "~> 2.11")

@@ -8,3 +8,4 @@ pkg/
 coverage/
 *.sublime-project
 *.sublime-workspace
+*.bundle

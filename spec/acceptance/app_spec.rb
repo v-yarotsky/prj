@@ -1,15 +1,12 @@
 require 'spec_helper'
-require 'fakefs/spec_helpers'
+require 'tmpdir'
 require 'fileutils'
 require 'prj'
 require 'stringio'
 require 'yaml'
 
 describe "Prj::App" do
-  include FakeFS::SpecHelpers
-
   let(:output) { StringIO.new }
-  let(:root) { "/Projects" }
   let(:subdirectories) do
     [
       "foo/.git/",
@@ -20,9 +17,12 @@ describe "Prj::App" do
     ].map { |d| File.join(root, d) }
   end
 
-  before(:each) do
-    FileUtils.mkdir_p(root)
-    subdirectories.each { |d| FileUtils.mkdir_p(d) }
+  around(:each) do |example|
+    Dir.mktmpdir("Projects") do |root|
+      @root = root
+      subdirectories.each { |d| FileUtils.mkdir_p(d) }
+      example.run
+    end
   end
 
   context "within projcts root" do
@@ -58,12 +58,16 @@ describe "Prj::App" do
 
   def with_config(config = {})
     tmp = Prj::App.config_path
-    config_path = ".prj.yml"
+    config_path = File.join(Dir.tmpdir, ".prj.yml")
     File.open(config_path, "w") { |f| f.write YAML.dump(config) }
     Prj::App.config_path = config_path
     yield
   ensure
     Prj::App.config_path = tmp
+  end
+
+  def root
+    @root
   end
 end
 
