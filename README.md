@@ -14,6 +14,8 @@ contains supplied letters in given order. The search is scoped by projects root
 directory, which is specified in ~/.prj.yml config file (Default: ~/Projects).
 See Installation & Configuration section.
 
+*now even faster with C extension*
+
 Installation & Configuration:
 -----------------------------
 1. Install the gem:
