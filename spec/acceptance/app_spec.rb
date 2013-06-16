@@ -26,40 +26,38 @@ describe "Prj::App" do
     end
   end
 
-  context "within projcts root" do
-    it "prints matching directory and returns 0" do
-      with_config("projects_root" => root) do
-        Prj::App.new(output, ["ap"]).run.should == 0
-        output.string.chomp.should == File.join(root, "baz/craps/poops")
-      end
+  it "prints matching directory and returns 0" do
+    with_config("projects_root" => root) do
+      Prj::App.new(output, ["ap"]).run.should == 0
+      output.string.chomp.should == File.join(root, "baz/craps/poops")
     end
+  end
 
-    it "prints projects root and returns 0 if directory not found" do
-      with_config("projects_root" => root) do
-        Prj::App.new(output, ["nothingtofind"]).run.should == 0
-        output.string.chomp.should == root
-      end
+  it "prints projects root and returns 0 if directory not found" do
+    with_config("projects_root" => root) do
+      Prj::App.new(output, ["nothingtofind"]).run.should == 0
+      output.string.chomp.should == root
     end
+  end
 
-    it "allows case-insensitive search if option specified in config" do
-      with_config("projects_root" => root, "case_sensitive" => false) do
-        Prj::App.new(output, ["Fo"]).run.should == 0
-        output.string.chomp.should == File.join(root, "foo")
-      end
+  it "allows case-insensitive search if option specified in config" do
+    with_config("projects_root" => root, "case_sensitive" => false) do
+      Prj::App.new(output, ["Fo"]).run.should == 0
+      output.string.chomp.should == File.join(root, "foo")
     end
+  end
 
-    it "does not search nested repos by default" do
-      with_config("projects_root" => root) do
-        Prj::App.new(output, ["fob"]).run.should == 0
-        output.string.chomp.should_not == File.join(root, "foo/baz")
-      end
+  it "does not search nested repos by default" do
+    with_config("projects_root" => root) do
+      Prj::App.new(output, ["fob"]).run.should == 0
+      output.string.chomp.should_not == File.join(root, "foo/baz")
     end
+  end
 
-    it "can search nested repos if 'search_nested_repositories' option is true" do
-      with_config("projects_root" => root, "search_nested_repositories" => true) do
-        Prj::App.new(output, ["fob"]).run.should == 0
-        output.string.chomp.should == File.join(root, "foo/baz")
-      end
+  it "can search nested repos if 'search_nested_repositories' option is true" do
+    with_config("projects_root" => root, "search_nested_repositories" => true) do
+      Prj::App.new(output, ["fob"]).run.should == 0
+      output.string.chomp.should == File.join(root, "foo/baz")
     end
   end
 
@@ -70,6 +68,13 @@ describe "Prj::App" do
   it "defaults to ~/Projects as default projects root" do
     with_config do
       Prj::App.new(output, ["asdf"]).config.fetch("projects_root").should == File.expand_path("~/Projects")
+    end
+  end
+
+  it "outputs project root if called without argument" do
+    with_config("projects_root" => "~/proj") do
+      Prj::App.new(output, []).run.should == 0
+      output.string.chomp.should == File.expand_path("~/proj")
     end
   end
 

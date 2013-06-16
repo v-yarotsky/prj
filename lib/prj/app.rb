@@ -15,7 +15,7 @@ module Prj
 
     def run
       if @letters.empty?
-        @output.puts config.fetch("projects_root")
+        @output.puts File.expand_path(config.fetch("projects_root"))
         return 0
       end
       finder = Finder.new(config.fetch("projects_root"), symbolize_keys(config))
