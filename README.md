@@ -29,9 +29,9 @@ Installation & Configuration:
 3. Put a project root directory name into ~/.prj.yml, i.e:
    ```
    projects_root: ~/Projects
-   case_sensitive: false
-   search_nested_repositories: false
-   vcs_directories:
+   case_sensitive: false                 # default: true
+   search_nested_repositories: false     # default: false (slower if true)
+   vcs_directories:                      # default: [.git]
      - .git
      - .svn
      - .hg

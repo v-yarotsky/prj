@@ -7,6 +7,7 @@
 void Init_finder();
 
 VALUE prj_finder_initialize_m(VALUE self, VALUE projectsRoot, VALUE options);
+VALUE expand_path(VALUE path);
 
 VALUE prj_finder_find_project_directories_m(VALUE self);
 VALUE prj_finder_traverse_projects_root(VALUE self, char *projectsRoot, int searchNestedRepositories, VALUE (*callback)(VALUE self, const FTS *fs, const FTSENT *parent, const FTSENT *child));
@@ -24,9 +25,8 @@ void Init_finder() {
 }
 
 VALUE prj_finder_initialize_m(VALUE self, VALUE projectsRoot, VALUE options) {
-  VALUE file, expandedProjectsRoot, vcsDirectories, searchNestedRepositories;
-  file = rb_const_get(rb_cObject, rb_intern("File"));
-  expandedProjectsRoot = rb_funcall(file, rb_intern("expand_path"), 1, rb_check_string_type(projectsRoot));
+  VALUE expandedProjectsRoot, vcsDirectories, searchNestedRepositories;
+  expandedProjectsRoot = expand_path(projectsRoot);
 
   vcsDirectories = rb_hash_aref(options, ID2SYM(rb_intern("vcs_directories")));
 
@@ -41,6 +41,12 @@ VALUE prj_finder_initialize_m(VALUE self, VALUE projectsRoot, VALUE options) {
   rb_iv_set(self, "@search_nested_repositories", searchNestedRepositories);
   rb_iv_set(self, "@project_directories", rb_ary_new());
   return self;
+}
+
+VALUE expand_path(VALUE path) {
+  VALUE file;
+  file = rb_const_get(rb_cObject, rb_intern("File"));
+  return rb_funcall(file, rb_intern("expand_path"), 1, rb_check_string_type(path));
 }
 
 VALUE prj_finder_find_project_directories_m(VALUE self) {

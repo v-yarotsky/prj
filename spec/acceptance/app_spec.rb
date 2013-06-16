@@ -37,7 +37,7 @@ describe "Prj::App" do
     it "prints projects root and returns 0 if directory not found" do
       with_config("projects_root" => root) do
         Prj::App.new(output, ["nothingtofind"]).run.should == 0
-        output.string.chomp.should == root + "/"
+        output.string.chomp.should == root
       end
     end
 
@@ -68,7 +68,9 @@ describe "Prj::App" do
   end
 
   it "defaults to ~/Projects as default projects root" do
-    Prj::App.new(output, ["asdf"]).config.fetch("projects_root").should == File.expand_path("~/Projects")
+    with_config do
+      Prj::App.new(output, ["asdf"]).config.fetch("projects_root").should == File.expand_path("~/Projects")
+    end
   end
 
   def with_config(config = {})

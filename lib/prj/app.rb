@@ -22,7 +22,7 @@ module Prj
       filter = Filter.new(@letters, config.fetch("case_sensitive"))
       directories = finder.find_project_directories
       filtered_directories = filter.filter(directories)
-      target_directory = File.join(config.fetch("projects_root"), filtered_directories.first.to_s)
+      target_directory = File.expand_path(File.join(config.fetch("projects_root"), filtered_directories.first.to_s))
       @output.puts target_directory
       0
     end
