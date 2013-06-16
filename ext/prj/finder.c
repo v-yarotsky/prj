@@ -11,6 +11,7 @@ VALUE prj_finder_initialize(VALUE self, VALUE projectsRoot, VALUE vcsDirectories
 VALUE prj_finder_find_project_directories(VALUE self);
 VALUE traverse_projects_root(VALUE self, char *projectsRoot, VALUE (*callback)(VALUE self, const FTS *fs, const FTSENT *parent, const FTSENT *child));
 VALUE collect_project(VALUE self, const FTS *fs, const FTSENT *parent, const FTSENT *child);
+char * normalize_path(char *path);
 VALUE is_vcs_dir(VALUE self, const char *dir);
 
 VALUE Prj, PrjFinder;
@@ -92,8 +93,21 @@ VALUE collect_project(VALUE self, const FTS *fs, const FTSENT *parent, const FTS
 
   prefixed   = parent->fts_path;
   unprefixed = prefixed + RSTRING_LEN(root);
-  rb_ary_push(result, rb_str_new2(unprefixed));
+
+  rb_ary_push(result, rb_str_new2(normalize_path(unprefixed)));
   return Qtrue;
+}
+
+// strips unnecessary trailing / on linux
+char * normalize_path(char *path) {
+  size_t path_length;
+  path_length = strlen(path);
+
+  if (path[path_length - 1] == '/') {
+    path[path_length - 1] = '\0';
+  }
+
+  return path;
 }
 
 VALUE is_vcs_dir(VALUE self, const char *dir) {
