@@ -30,6 +30,7 @@ Installation & Configuration:
    ```
    projects_root: ~/Projects
    case_sensitive: false
+   search_nested_repositories: false
    vcs_directories:
      - .git
      - .svn

@@ -18,7 +18,7 @@ module Prj
         @output.puts config.fetch("projects_root")
         return 0
       end
-      finder = Finder.new(config.fetch("projects_root"), config.fetch("vcs_directories"))
+      finder = Finder.new(config.fetch("projects_root"), symbolize_keys(config))
       filter = Filter.new(@letters, config.fetch("case_sensitive"))
       directories = finder.find_project_directories
       filtered_directories = filter.filter(directories)
@@ -42,6 +42,10 @@ module Prj
         "vcs_directories" => [".git"],
         "case_sensitive"  => true
       }
+    end
+
+    def symbolize_keys(hash)
+      Hash[hash.map { |k, v| [k.to_sym, v] }]
     end
   end
 

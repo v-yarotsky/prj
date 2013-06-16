@@ -10,6 +10,7 @@ describe "Prj::App" do
   let(:subdirectories) do
     [
       "foo/.git/",
+      "foo/baz/.git/",
       "bar/",
       "baz/qux/crisp/.git/",
       "baz/craps/poops/.git/",
@@ -44,6 +45,20 @@ describe "Prj::App" do
       with_config("projects_root" => root, "case_sensitive" => false) do
         Prj::App.new(output, ["Fo"]).run.should == 0
         output.string.chomp.should == File.join(root, "foo")
+      end
+    end
+
+    it "does not search nested repos by default" do
+      with_config("projects_root" => root) do
+        Prj::App.new(output, ["fob"]).run.should == 0
+        output.string.chomp.should_not == File.join(root, "foo/baz")
+      end
+    end
+
+    it "can search nested repos if 'search_nested_repositories' option is true" do
+      with_config("projects_root" => root, "search_nested_repositories" => true) do
+        Prj::App.new(output, ["fob"]).run.should == 0
+        output.string.chomp.should == File.join(root, "foo/baz")
       end
     end
   end
