@@ -1,4 +1,4 @@
 require 'mkmf'
 
-dir_config('finder')
-create_makefile('finder')
+dir_config('fast_traverse')
+create_makefile('fast_traverse')

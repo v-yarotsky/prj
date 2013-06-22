@@ -26,7 +26,7 @@ task :default => [:all_specs]
 
 require 'rake/extensiontask'
 Rake::ExtensionTask.new do |t|
-  t.name    = 'finder'
+  t.name    = 'fast_traverse'
   t.ext_dir = 'ext/prj'
   t.lib_dir = 'lib/prj'
 end
