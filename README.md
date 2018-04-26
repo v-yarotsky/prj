@@ -22,9 +22,14 @@ Installation & Configuration:
 
    ```gem install prj```
 
-   ([RVM](http://rvm.io) users) check out [this blog post](http://blog.yarotsky.me/2012-12-15-faster-ruby-scripts-startup)
-2. ([oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) users) Put [scripts/zsh/prj.plugin.zsh](https://raw.github.com/v-yarotsky/prj/master/scripts/zsh/prj.plugin.zsh) into ``~/.oh-my-zsh/custom/plugins/prj/prj.plugin.zsh``.
+2a. ([oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) users) Put [scripts/zsh/prj.plugin.zsh](https://raw.github.com/v-yarotsky/prj/master/scripts/zsh/prj.plugin.zsh) into ``~/.oh-my-zsh/custom/plugins/prj/prj.plugin.zsh``.
    Don't forget to enable the plugin in ~/.zshrc
+
+2b. (bash users) Add the following snippet to your .bash_profile:
+
+    function p() {
+        builtin cd "$(prj $1)"
+    }
 
 3. Put a project root directory name into ~/.prj.yml, i.e:
    ```
