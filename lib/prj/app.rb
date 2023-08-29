@@ -29,7 +29,7 @@ module Prj
 
     def config
       @config ||= begin
-        config = File.exists?(self.class.config_path) ? YAML.load(File.read(self.class.config_path)) : {}
+        config = File.exist?(self.class.config_path) ? YAML.load(File.read(self.class.config_path)) : {}
         default_config.merge(config)
       end
     end

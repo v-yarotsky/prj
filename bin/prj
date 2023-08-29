@@ -13,4 +13,3 @@ Signal.trap("SIGINT") do
 end
 
 exit App.new(STDOUT, ARGV).run
-

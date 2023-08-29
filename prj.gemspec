@@ -19,8 +19,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/v-yarotsky/prj"
   s.licenses = ["MIT"]
 
-  s.rubygems_version = "1.8.21"
-  s.required_rubygems_version = ">= 1.3.6"
+  s.required_ruby_version = ">= 2.2.0"
   s.specification_version = 3
 
   s.extensions = Dir.glob("ext/**/extconf.rb")
@@ -28,9 +27,8 @@ Gem::Specification.new do |s|
   s.files = Dir.glob("{bin,lib,ext,spec}/**/*") + %w[Gemfile Gemfile.lock Rakefile LICENSE.txt README.md VERSION]
   s.require_paths = ["lib"]
 
-  s.add_development_dependency("rspec", "~> 2.11")
-  s.add_development_dependency("rake",  "~> 0.9")
-  s.add_development_dependency("simplecov", "~> 0.6")
+  s.add_development_dependency("rspec", "~> 3.4")
+  s.add_development_dependency("rake",  "~> 13.0")
+  s.add_development_dependency("rake-compiler",  "~> 1.2")
+  s.add_development_dependency("simplecov", "~> 0.22")
 end
-
-

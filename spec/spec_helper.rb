@@ -13,7 +13,6 @@ if ENV['COVERAGE']
 end
 
 require 'rspec'
-require 'rspec/autorun'
 
 $:.unshift File.expand_path('../../lib', __FILE__)
 
